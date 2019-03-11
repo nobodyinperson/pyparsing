@@ -44,9 +44,9 @@ class PyparsingExpressionTestCase(unittest.TestCase):
             #    the location against an expected value
             with self.subTest(test_spec=test_spec):
                 test_spec.expr.streamline()
-                print("\n{} - {}({})".format(test_spec.desc,
-                                             type(test_spec.expr).__name__,
-                                             test_spec.expr))
+                print("\n{0} - {1}({2})".format(test_spec.desc,
+                                                type(test_spec.expr).__name__,
+                                                test_spec.expr))
 
                 parsefn = getattr(test_spec.expr, test_spec.parse_fn)
                 if test_spec.expected_fail_locn is None:
