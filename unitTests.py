@@ -3865,8 +3865,20 @@ class ParseResultsWithNameOr(ParseTestCase):
             not the bird
             the bird
         """)
-        self.assertEqual(list(expr.parseString('not the bird')['rexp']), 'not the bird'.split())
-        self.assertEqual(list(expr.parseString('the bird')['rexp']), 'the bird'.split())
+        self.assertEqual(expr.parseString('not the bird')['rexp'], 'not')
+        self.assertEqual(expr.parseString('the bird')['rexp'], 'the')
+
+        with AutoReset(pp.__future__, "collect_all_And_tokens"):
+            pp.__future__.collect_all_And_tokens = True
+            expr_a = pp.Literal('not') + pp.Literal('the') + pp.Literal('bird')
+            expr_b = pp.Literal('the') + pp.Literal('bird')
+            expr = (expr_a ^ expr_b)('rexp')
+            expr.runTests("""\
+                not the bird
+                the bird
+            """)
+            self.assertEqual(list(expr.parseString('not the bird')['rexp']), 'not the bird'.split())
+            self.assertEqual(list(expr.parseString('the bird')['rexp']), 'the bird'.split())
 
 class EmptyDictDoesNotRaiseException(ParseTestCase):
     def runTest(self):

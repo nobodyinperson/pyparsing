@@ -2,6 +2,32 @@
 Change Log
 ==========
 
+Version 2.3.2 - March, 2019
+---------------------------
+- Well, it looks like the API change that was introduced in 2.3.1 was more
+  drastic than expected, so for a friendlier forward upgrade path, this
+  release:
+  . adds a pyparsing.__future__ object for specifying compatibility with
+    future breaking changes
+  . reverts the changes in 2.3.1 that caused the API-breaking behavior
+    by default
+  . conditionalizes the API-breaking behavior, based on the value
+    pyparsing.__future__.collect_all_And_tokens. For 2.3.2 and all 2.3.x
+    releases, this value will be False, preserving the old behavior.
+
+  User code written against pyparsing 2.3.x versions can set this value to
+  True to get the new behavior, to support testing and early release of
+  user code under 2.3.x with the API-breaking behavior.
+
+  In 2.4 and later versions, the conditional code will be removed and
+  pyparsing will use the new behavior. Setting the flag to True or False
+  in these later versions will have no effect.
+
+  Version 2.3.1 will be removed from general distribution, to be
+  replaced by 2.3.2 and 2.4.0. 2.4.0 will be the main development path
+  moving forward, with only significant bugfixes being backported to the
+  2.3.x path.
+
 Version 2.3.1 - January, 2019
 -----------------------------
 - POSSIBLE API CHANGE: this release fixes a bug when results names were

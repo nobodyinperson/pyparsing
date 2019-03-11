@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # module pyparsing.py
 #
 # Copyright (c) 2003-2019  Paul T. McGuire
@@ -23,8 +23,7 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-__doc__ = \
-"""
+__doc__ = """\
 pyparsing module - Classes and methods to define and execute parsing grammars
 =============================================================================
 
@@ -94,7 +93,7 @@ classes inherit from. Use the docstrings for examples of how to:
 """
 
 __version__ = "2.3.2"
-__versionTime__ = "18 Jan 2019 22:15 UTC"
+__versionTime__ = "02 Mar 2019 15:23 UTC"
 __author__ = "Paul McGuire <ptmcg@users.sourceforge.net>"
 
 import string
@@ -142,6 +141,20 @@ try:
     from types import SimpleNamespace
 except ImportError:
     class SimpleNamespace: pass
+
+# version compatibility configuration
+__future__ = SimpleNamespace()
+__future__.__doc__ = """
+    A cross-version compatibility configuration for pyparsing features that will be 
+    released in a future version. By setting values in this configuration to True, 
+    those features can be enabled in prior versions for compatibility development 
+    and testing.
+    
+     - collect_all_And_tokens - flag to enable fix for Issue #63 that fixes erroneous grouping
+       of results names when an And expression is nested within an Or or MatchFirst; set to 
+       True to enable bugfix to be released in pyparsing 2.4
+"""
+__future__.collect_all_And_tokens = False
 
 
 #~ sys.stderr.write( "testing pyparsing module, version %s, %s\n" % (__version__,__versionTime__ ) )
@@ -3774,7 +3787,8 @@ class Or(ParseExpression):
 
     def streamline(self):
         super(Or, self).streamline()
-        self.saveAsList = any(e.saveAsList for e in self.exprs)
+        if __future__.collect_all_And_tokens:
+            self.saveAsList = any(e.saveAsList for e in self.exprs)
         return self
 
     def parseImpl( self, instring, loc, doActions=True ):
@@ -3862,7 +3876,8 @@ class MatchFirst(ParseExpression):
 
     def streamline(self):
         super(MatchFirst, self).streamline()
-        self.saveAsList = any(e.saveAsList for e in self.exprs)
+        if __future__.collect_all_And_tokens:
+            self.saveAsList = any(e.saveAsList for e in self.exprs)
         return self
 
     def parseImpl( self, instring, loc, doActions=True ):
