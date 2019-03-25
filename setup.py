@@ -2,13 +2,14 @@
 
 """Setup script for the pyparsing module distribution."""
 
+import sys
 from setuptools import setup
 from pyparsing import __version__ as pyparsing_version
 
 modules = ["pyparsing",]
 
 setup(# Distribution meta-data
-    name = "pyparsing",
+    name = "python3-pyparsing" if sys.argv[1] == "bdist_rpm" else "pyparsing",
     version = pyparsing_version,
     description = "Python parsing module",
     author = "Paul McGuire",

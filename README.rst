@@ -3,6 +3,11 @@ PyParsing – A Python Parsing Module
 
 |Build Status|
 
+SailfishOS Package
+==================
+
+This fork can be used to build a SailfishOS via `python3 setup.py bdist_rpm`.
+
 Introduction
 ============
 
